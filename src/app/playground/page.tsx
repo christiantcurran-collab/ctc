@@ -9,21 +9,36 @@ import { ResultsPanel } from "@/components/results/results-panel";
 import { ComparisonView } from "@/components/results/comparison-view";
 import { Button } from "@/components/ui/button";
 import { GitCompare, Columns2 } from "lucide-react";
-import { demoQuery } from "@/lib/demo-data";
 
 export default function PlaygroundPage() {
   const [config, setConfig] = useState<RAGConfig>({ ...DEFAULT_CONFIG });
   const [result, setResult] = useState<QueryResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleQuery = async (query: string) => {
     setIsLoading(true);
-    // Simulate latency for realistic feel
-    await new Promise((resolve) => setTimeout(resolve, 400 + Math.random() * 300));
-    const queryResult = demoQuery(query, config);
-    setResult(queryResult);
-    setIsLoading(false);
+    setError(null);
+    try {
+      const res = await fetch("/api/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, config }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Query failed");
+        setResult(null);
+      } else {
+        setResult(data as QueryResult);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Network error");
+      setResult(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (compareMode) {
@@ -61,6 +76,11 @@ export default function PlaygroundPage() {
           Compare Mode
         </Button>
       </div>
+      {error && (
+        <div className="px-4 py-2 bg-red-500/10 border-b border-red-500/20 text-red-400 text-sm">
+          {error}
+        </div>
+      )}
       <div className="flex flex-1 overflow-hidden">
         {/* Config Panel — Left Sidebar */}
         <div className="w-80 border-r border-border shrink-0 overflow-y-auto">

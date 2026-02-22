@@ -1,19 +1,29 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Database, BookOpen, User, FlaskConical } from "lucide-react";
+import { Database, BookOpen, User, FlaskConical, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/", label: "Home", icon: Database },
   { href: "/playground", label: "Playground", icon: FlaskConical },
+  { href: "/how-ai-works", label: "How AI Works", icon: Lightbulb },
   { href: "/learn", label: "Learn", icon: BookOpen },
   { href: "/about", label: "About", icon: User },
 ];
 
 export function Header() {
   const pathname = usePathname();
+  const [mode, setMode] = useState<"demo" | "live">("demo");
+
+  useEffect(() => {
+    fetch("/api/mode")
+      .then((res) => res.json())
+      .then((data) => setMode(data.mode))
+      .catch(() => setMode("demo"));
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -45,10 +55,17 @@ export function Header() {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Demo Mode
-          </div>
+          {mode === "live" ? (
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-xs font-medium">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Live Mode
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-amber-500/10 text-amber-400 text-xs font-medium">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+              Demo Mode
+            </div>
+          )}
         </div>
       </div>
     </header>

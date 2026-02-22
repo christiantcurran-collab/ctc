@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { CTCNav } from "@/components/ctc-nav";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "RAG Playground — FCA Handbook | CTC Portfolio",
+  title: "CTC Portfolio",
   description:
-    "Interactive tool for experimenting with Retrieval Augmented Generation configurations against the UK Financial Conduct Authority Handbook.",
+    "Christian Curran — Interactive portfolio showcasing AI, insurance, and solutions engineering demos.",
 };
 
 export default function RootLayout({
@@ -13,14 +14,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-background font-sans antialiased">
+      <body>
+        <CTCNav />
         {children}
       </body>
     </html>

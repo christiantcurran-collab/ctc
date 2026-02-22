@@ -5,7 +5,6 @@ import type { RAGConfig, QueryResult } from "@/lib/types";
 import { DEFAULT_CONFIG } from "@/lib/types";
 import { ConfigPanel } from "@/components/config-panel/config-panel";
 import { ResultsPanel } from "./results-panel";
-import { demoQuery } from "@/lib/demo-data";
 
 interface ComparisonViewProps {
   configA: RAGConfig;
@@ -22,19 +21,33 @@ export function ComparisonView({ configA, onConfigAChange }: ComparisonViewProps
   const [resultA, setResultA] = useState<QueryResult | null>(null);
   const [resultB, setResultB] = useState<QueryResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentQuery, setCurrentQuery] = useState("");
 
   const handleQuery = async (query: string) => {
     setIsLoading(true);
-    setCurrentQuery(query);
-    // Run both configs in parallel
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    const rA = demoQuery(query, configA);
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    const rB = demoQuery(query, configB);
-    setResultA(rA);
-    setResultB(rB);
-    setIsLoading(false);
+    try {
+      // Run both configs in parallel via the API
+      const [resA, resB] = await Promise.all([
+        fetch("/api/query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, config: configA }),
+        }),
+        fetch("/api/query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, config: configB }),
+        }),
+      ]);
+      const dataA = await resA.json();
+      const dataB = await resB.json();
+      setResultA(resA.ok ? dataA : null);
+      setResultB(resB.ok ? dataB : null);
+    } catch {
+      setResultA(null);
+      setResultB(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
