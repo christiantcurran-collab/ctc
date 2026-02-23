@@ -19,7 +19,7 @@ export function CTCNav() {
         <div className="ctc-nav-logo">
           <span className="ctc-nav-logo-text">CTC</span>
           <span className="ctc-nav-logo-sep">|</span>
-          <span className="ctc-nav-logo-title">Portfolio</span>
+          <span className="ctc-nav-logo-title">OpenAI | GPT | Codex</span>
         </div>
         <div className="ctc-nav-tabs">
           {tabs.map((tab) => (

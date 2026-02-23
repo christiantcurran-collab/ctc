@@ -98,7 +98,7 @@ export default function HowAIWorksPage() {
           <div className="how-llm-hero-badge">Interactive Demo</div>
           <h1>How an LLM Works</h1>
           <p className="how-llm-hero-sub">
-            Watch a large language model predict the next word — and see how every parameter changes its mind
+                        Watch a large language model predict the next word and see how every parameter changes its mind
           </p>
           <div className="how-llm-sentence-card">
             <span className="how-llm-sentence-text">

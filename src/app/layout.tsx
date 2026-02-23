@@ -3,9 +3,9 @@ import { CTCNav } from "@/components/ctc-nav";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CTC Portfolio",
+  title: "CTC OpenAI GPT Codex Portfolio",
   description:
-    "Interactive portfolio showcasing AI, insurance, and solutions engineering demos.",
+    "Interactive portfolio showcasing OpenAI, GPT, and Codex-focused AI engineering demos.",
 };
 
 export default function RootLayout({
