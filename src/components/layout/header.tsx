@@ -33,8 +33,8 @@ export function Header() {
             <Database className="h-4 w-4 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold leading-tight">RAG Playground</span>
-            <span className="text-[10px] text-muted-foreground leading-tight">FCA Handbook</span>
+            <span className="text-sm font-bold leading-tight">OpenAI GPT Codex Lab</span>
+            <span className="text-[10px] text-muted-foreground leading-tight">OpenAI Engineering Portfolio</span>
           </div>
         </Link>
         <nav className="flex items-center gap-1">
